@@ -1,0 +1,8 @@
+# Request
+string movement_type  # "move_forward", "move_back", "move_left", "move_right", "move_up", "move_down", "rotate_right", "rotate_left"
+int16 distance        # centimeters or degrees
+int16 speed           # centimeters/sec or degrees/sec
+---
+# Response
+bool success
+string message
