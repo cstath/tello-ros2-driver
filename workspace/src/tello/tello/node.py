@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 
-import pprint
 import math
 import rclpy
 import threading
 import numpy
 import time
-import av
 import tf2_ros
-import cv2
 import time
 import yaml
 
@@ -186,9 +183,13 @@ class TelloNode():
                     odom_msg.pose.pose.orientation.w = q[3]
                     if not self.simulate:
                         odom_msg.pose.pose.position.z = float(self.tello.get_distance_tof()) / 100.0
-                        odom_msg.twist.twist.linear.x = float(self.tello.get_speed_x()) / 100.0
-                        odom_msg.twist.twist.linear.y = float(self.tello.get_speed_y()) / 100.0
-                        odom_msg.twist.twist.linear.z = float(self.tello.get_speed_z()) / 100.0
+                        # Velocities from the IMU are in decimeter/s
+                        # X is drone's initial forward direction
+                        # Y is drone's initial right direction
+                        # Z is drone's down direction
+                        odom_msg.twist.twist.linear.x = float(self.tello.get_speed_x()) / 10.0
+                        odom_msg.twist.twist.linear.y = float(self.tello.get_speed_y()) / 10.0
+                        odom_msg.twist.twist.linear.z = float(self.tello.get_speed_z()) / 10.0
                     self.pub_odom.publish(odom_msg)
 
                 time.sleep(rate)
